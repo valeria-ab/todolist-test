@@ -1,0 +1,9 @@
+.dataTime {
+    opacity: 0.5;
+    font-weight: lighter;
+    font-size: small;
+}
+
+.isDone {
+    opacity: 0.5;
+  }
