@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/Todolist.module.css"],"names":[],"mappings":"AAAA,0BACI,UAAY,CACZ,mBAAoB,CACpB,eACJ,CAEA,wBACI,UACF","file":"main.088d57a4.chunk.css","sourcesContent":[".dataTime {\n    opacity: 0.5;\n    font-weight: lighter;\n    font-size: small;\n}\n\n.isDone {\n    opacity: 0.5;\n  }\n\n"]}
