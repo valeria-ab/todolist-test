@@ -3,7 +3,12 @@ import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reduc
 
 
 
-const initialState: TasksStateType = {}
+const initialState: TasksStateType = {
+    "1": [
+        {id: "1", title: "task", isDone: true},
+        {id: "2", title: "double-click on me", isDone: false}
+    ]
+}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {

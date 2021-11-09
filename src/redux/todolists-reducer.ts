@@ -2,8 +2,10 @@ import { v1 } from "uuid";
 
 
 const initialState: InitialStateType = {
-    todolists: [],
-    todolistNames: []
+    todolists: [
+        { id: "1", time: "09.11.2021, 00:00:00", title: "test" }
+    ],
+    todolistNames: ["test"]
 }
 
 
@@ -12,13 +14,17 @@ export const todolistsReducer = (state: InitialStateType = initialState, action:
 
         case 'REMOVE-TODOLIST': {
             let newState = { ...state }
+            let todolist = newState.todolists.find(tl => tl.id === action.id)
+            let todolistTitle: string;
+            if (todolist) { todolistTitle = todolist.title }
             newState.todolists = newState.todolists.filter(tl => tl.id !== action.id);
+            newState.todolistNames = newState.todolistNames.filter(n => n !== todolistTitle)
             return newState
         }
         case 'ADD-TODOLIST': {
             let newState = { ...state, ...state.todolistNames }
             let now = new Date().toLocaleString()
-            let newTodoList: TodoListType = { id: action.todolistID, title: action.title, filter: 'all', time: now }
+            let newTodoList: TodoListType = { id: action.todolistID, title: action.title, time: now }
             newState.todolists = [...newState.todolists, newTodoList]
             newState.todolistNames.push(action.title)
             return newState
@@ -27,17 +33,14 @@ export const todolistsReducer = (state: InitialStateType = initialState, action:
         case 'CHANGE-TODOLIST-TITLE': {
             let newState = { ...state, ...state.todolists }
             let todolist = newState.todolists.find(t => t.id === action.id)
+
             if (todolist) {
+                let todolistTitle = todolist.title
+                newState.todolistNames = newState.todolistNames.filter(n => n !== todolistTitle)
                 todolist.title = action.title
+                newState.todolistNames.push(action.title)
             }
-            return newState
-        }
-        case 'CHANGE-TODOLIST-FILTER': {
-            let newState = { ...state, ...state.todolists }
-            let changedTodoList = newState.todolists.find(tl => tl.id === action.id);
-            if (changedTodoList) {
-                changedTodoList.filter = action.filter
-            }
+
             return newState
         }
 
@@ -58,31 +61,20 @@ export const changeTodolistTitleAC = (id: string, title: string): ChangeTodolist
         title: title
     }
 }
-export const changeTodolistFilterAC = (id: string, filter: FilterValuesType): ChangeTodolistFilterActionType => {
-    return {
-        type: 'CHANGE-TODOLIST-FILTER',
-        id: id,
-        filter: filter
-    }
-}
-
-
 
 
 
 // types
 
-type InitialStateType = {
+export type InitialStateType = {
     todolists: Array<TodoListType>
     todolistNames: string[]
 }
 
-export type FilterValuesType = 'all' | 'active' | 'completed';
 
 export type TodoListType = {
     id: string
     title: string
-    filter: FilterValuesType
     time: string
 }
 
@@ -90,7 +82,6 @@ type ActionsType =
     RemoveTodolistActionType
     | AddTodolistActionType
     | ChangeTodolistTitleActionType
-    | ChangeTodolistFilterActionType
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -105,11 +96,6 @@ export type ChangeTodolistTitleActionType = {
     type: 'CHANGE-TODOLIST-TITLE'
     title: string
     id: string
-}
-export type ChangeTodolistFilterActionType = {
-    type: 'CHANGE-TODOLIST-FILTER'
-    id: string
-    filter: FilterValuesType
 }
 
 

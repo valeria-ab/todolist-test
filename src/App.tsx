@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Todolist } from "./components/Todolist";
 import { AppRootStateType } from "./redux/store";
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TasksStateType } from "./redux/tasks-reducer";
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, FilterValuesType, removeTodolistAC, TodoListType } from "./redux/todolists-reducer";
+import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, TodoListType } from "./redux/todolists-reducer";
 import { Container, Grid,  Paper } from "@material-ui/core";
 import { AddItemForm } from "./components/AddItemForm";
+
 
 
 function App() {
@@ -14,14 +15,6 @@ function App() {
   const todolists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
-
-  const changeFilter = useCallback( (todoListId: string, value: FilterValuesType) => {
-
-      const action = changeTodolistFilterAC(todoListId, value)
-
-      dispatch(action)
-
-  }, [dispatch] )
 
 
   const removeTask = useCallback( (todolistId: string, taskId: string) => {
@@ -69,7 +62,7 @@ function App() {
   }, [dispatch] )
 
   return (
-      <div className="App">
+      <div>
           <Container fixed>
               <Grid container spacing={3} style={{padding: "20px"}}>
                   <AddItemForm addItem={addTodoList}/>
@@ -78,18 +71,15 @@ function App() {
                   {
                       todolists.map(td => {
                           let allTodolistTasks = tasks[td.id]
-                     /*     let tasksForTodolist = allTodolistTasks*/
 
                           return <Grid item>
                               <Paper style={{padding: "10px"}}>
                                   <Todolist key={td.id}
                                             id={td.id}
                                             title={td.title}
-                                            tasks={allTodolistTasks}
-                                            filter={td.filter}
+                                            tasks={allTodolistTasks}                                    
                                             time={td.time}
-                                            removeTask={removeTask}
-                                            changeFilter={changeFilter}
+                                            removeTask={removeTask}                                           
                                             addTask={addTask}
                                             changeTaskStatus={changeTaskStatus}
                                             removeTodolist={removeTodolist}
